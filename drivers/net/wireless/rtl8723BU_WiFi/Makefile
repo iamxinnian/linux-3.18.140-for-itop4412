@@ -12,8 +12,8 @@ EXTRA_CFLAGS += -Wno-unused-value
 EXTRA_CFLAGS += -Wno-unused-label
 EXTRA_CFLAGS += -Wno-unused-parameter
 EXTRA_CFLAGS += -Wno-unused-function
-EXTRA_CFLAGS += -Wno-error=date-time
 EXTRA_CFLAGS += -Wno-unused
+EXTRA_CFLAGS += -Wno-error=date-time
 
 #EXTRA_CFLAGS += -Wno-uninitialized
 
@@ -40,7 +40,7 @@ CONFIG_SDIO_HCI = n
 CONFIG_GSPI_HCI = n
 ########################## Features ###########################
 CONFIG_MP_INCLUDED = y
-CONFIG_POWER_SAVING = n
+CONFIG_POWER_SAVING = y
 CONFIG_USB_AUTOSUSPEND = n
 CONFIG_HW_PWRP_DETECTION = n
 CONFIG_WIFI_TEST = n
@@ -927,8 +927,8 @@ ifeq ($(CONFIG_PLATFORM_ARM_ITOP4412), y)
 EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
 ARCH := arm
 CROSS_COMPILE := /usr/local/arm/arm-linux-gnueabi-4.9/bin/arm-linux-gnueabi-
-KVER  := 3.14.78
-KSRC := /opt/disk/linux-3.14.78 
+KVER  := 3.18.140
+KSRC := /opt/disk/linux-3.18.140
 endif
 
 ifeq ($(CONFIG_PLATFORM_RTD2880B), y)
