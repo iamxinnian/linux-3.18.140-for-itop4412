@@ -855,6 +855,7 @@ int mmc_sd_setup_card(struct mmc_host *host, struct mmc_card *card,
 		 */
 #ifdef CONFIG_MMC_PARANOID_SD_INIT
 		for (retries = 1; retries <= 3; retries++) {
+			mdelay(50);
 			err = mmc_read_switch(card);
 			if (!err) {
 				if (retries > 1) {
@@ -870,6 +871,7 @@ int mmc_sd_setup_card(struct mmc_host *host, struct mmc_card *card,
 			}
 		}
 #else
+		mdelay(50);
 		err = mmc_read_switch(card);
 #endif
 
