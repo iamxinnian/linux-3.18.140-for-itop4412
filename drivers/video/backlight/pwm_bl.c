@@ -23,6 +23,7 @@
 #include <linux/pwm_backlight.h>
 #include <linux/regulator/consumer.h>
 #include <linux/slab.h>
+#include <linux/delay.h>
 
 struct pwm_bl_data {
 	struct pwm_device	*pwm;
@@ -106,9 +107,10 @@ static int pwm_backlight_update_status(struct backlight_device *bl)
 		brightness = pb->notify(pb->dev, brightness);
 
 	if (brightness > 0) {
+		pwm_backlight_power_on(pb, brightness);
+		mdelay(200);
 		duty_cycle = compute_duty_cycle(pb, brightness);
 		pwm_config(pb->pwm, duty_cycle, pb->period);
-		pwm_backlight_power_on(pb, brightness);
 	} else
 		pwm_backlight_power_off(pb);
 
@@ -267,7 +269,7 @@ static int pwm_backlight_probe(struct platform_device *pdev)
 
 	if (pb->enable_gpio)
 		gpiod_direction_output(pb->enable_gpio, 1);
-
+		mdelay(200);
 	pb->power_supply = devm_regulator_get(&pdev->dev, "power");
 	if (IS_ERR(pb->power_supply)) {
 		ret = PTR_ERR(pb->power_supply);
@@ -322,8 +324,16 @@ static int pwm_backlight_probe(struct platform_device *pdev)
 
 	bl->props.brightness = data->dft_brightness;
 	backlight_update_status(bl);
-
 	platform_set_drvdata(pdev, bl);
+
+	bl->props.brightness = 0;
+	backlight_update_status(bl);
+	platform_set_drvdata(pdev, bl);
+
+	bl->props.brightness = data->dft_brightness;
+	backlight_update_status(bl);
+	platform_set_drvdata(pdev, bl);
+
 	return 0;
 
 err_alloc:
