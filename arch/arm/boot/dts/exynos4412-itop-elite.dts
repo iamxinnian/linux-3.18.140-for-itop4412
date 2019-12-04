@@ -171,6 +171,30 @@
 		pinctrl-0 = <&pwm1_out>;
 		pinctrl-names = "default";
 	};
+
+	fimd@11c00000 {
+		pinctrl-0 = <&lcd_clk &lcd_data24>;
+		pinctrl-names = "default";
+		status = "okay";
+		samsung,invert-vclk;
+		display-timings {
+			native-mode = <&timing0>;
+			timing0: timing {
+				hsync-active = <1>;
+				vsync-active = <1>;
+				de-active = <0>;									
+				clock-frequency = <50000000>;
+				hactive = <1024>;
+				vactive = <600>;
+				hfront-porch = <80>;
+				hback-porch = <36>;
+				hsync-len = <10>;
+				vback-porch = <15>;
+				vfront-porch = <1>;
+				vsync-len = <8>;
+			};
+		};
+	};	
 	
 	reserved-memory {
 		#address-cells = <1>;
