@@ -223,8 +223,6 @@
 
 	rtc@10070000 {
 		status = "okay";
-		clocks = <&clock CLK_RTC>, <&s5m8767_osc S2MPS11_CLK_AP>;
-		clock-names = "rtc", "rtc_src";
 	};
 
 	sdhci@12530000 {
@@ -679,6 +677,7 @@
 };
 
 &adc {
+	clocks = <&clock CLK_SROMC>;
 	vdd-supply = <&ldo3_reg>;
 	status = "okay";
 };
@@ -717,6 +716,25 @@
 		clock-names = "MCLK1";
 		wlf,shared-lrclk;
 		#sound-dai-cells = <0>;
+	};
+};
+
+&i2c_7 {
+	samsung,i2c-sda-delay = <100>;
+	samsung,i2c-max-bus-freq = <400000>;
+	pinctrl-0 = <&i2c7_bus>;
+	pinctrl-names = "default";
+	status = "okay";
+	ft5406: touchscreen@38 {
+		status = "okay";
+		compatible = "edt,edt-ft5306", "edt,edt-ft5x06";
+		reg = <0x38>;
+		interrupt-parent = <&gpx0>;
+		interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
+		reset-gpios = <&gpc0 2 GPIO_ACTIVE_LOW>;
+		wake-gpios = <&gpl1 1 GPIO_ACTIVE_HIGH>;
+		touchscreen-size-x = <1024>;
+		touchscreen-size-y = <600>;
 	};
 };
 
